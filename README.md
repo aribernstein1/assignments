@@ -26,8 +26,8 @@ The model is not intended for use in determining loan interest rates, credit lim
 - Source: GitHub, HMDA website
 - Train data rows = 112253, columns = 23
 - Validation data rows = 48085, columns = 23
-- Features: PAY_0–6, BILL_AMT1–6, PAY_AMT1–6, LIMIT_BAL, SEX, RACE, etc.
-- Target: DELINQ_NEXT (1 = late, 0 = on-time)
+- Features: property_value_std, no_intro_rate_period_std, loan_amount_std, income_std, conforming, intro_rate_period_std, debt_to_income_ratio_std, term_360
+- Target: high_priced (1 = high-priced loan, 0 = not high-priced)
 
 ### Correlation Heatmap:
 ![Unknown](https://github.com/user-attachments/assets/793fbe88-09ce-44dc-be29-de42b22b148a)
