@@ -9,7 +9,7 @@
 
 ## 1. Intended Use
 **Describe the business value of your group’s best remediated model:**
-The model helps financial institutions assess the risk of loan delinquency, enabling more informed decisions in credit management and reducing losses from defaults.
+The model helps financial institutions identify whether a loan is likely to be classified as “high-priced,” which can inform compliance reviews and risk monitoring under fair lending regulations.
 
 **Describe how your group’s best remediated model is designed to be used:**
 It is designed as a decision-support tool to flag high-risk borrowers based on past behavior and financial patterns, ideally used alongside human review.
@@ -20,19 +20,20 @@ Risk analysts, loan officers, compliance auditors, and credit managers in banks 
 **State whether your group’s best remediated model can or cannot be used for any additional purposes:**
 The model is not intended for use in determining loan interest rates, credit limits, or eligibility without further fairness testing or regulatory oversight.
 
+**Note**: This model is for educational purposes only and not suitable for real-world deployment without additional validation and fairness testing.
+
 ## 2. Training Data
-- Source: GWU Blackboard
-- Training size: 15,000 rows
-- Validation size: 7,500 rows
-- Test size: 7,500 rows
+- Source: GitHub, HMDA website
+- Train data rows = 112253, columns = 23
+- Validation data rows = 48085, columns = 23
 - Features: PAY_0–6, BILL_AMT1–6, PAY_AMT1–6, LIMIT_BAL, SEX, RACE, etc.
 - Target: DELINQ_NEXT (1 = late, 0 = on-time)
 
-### Feature Correlation Heatmap:
+### Correlation Heatmap:
 ![Unknown](https://github.com/user-attachments/assets/793fbe88-09ce-44dc-be29-de42b22b148a)
 
 
-### Feature Distributions:
+### Distributions of Key Standardized Features (Training Set):
 ![Unknown-2](https://github.com/user-attachments/assets/dcd6420c-e4e5-4455-bc54-2a34f762c855)
 
 
@@ -40,30 +41,32 @@ The model is not intended for use in determining loan interest rates, credit lim
 - Same schema as training
 - Test set size: 7,500 rows
 - Held out until final evaluation
+- The `high_priced` target is not included during model training or remediation and is used only for final model evaluation (AUC calculation).
 
 ## 4. Model Details
 - Type: Decision Tree initially, then remediated using EBM (Explainable Boosting Machine)
-- Software: Python, scikit-learn, interpretML
-- Best EBM Hyperparameters: defaults with 16 bins per feature and 3000 interactions
+- Software: Python 3.11, scikit-learn version: 1.6.1, interpretML version: 0.6.10
+- Best EBM Hyperparameters: max_bins = 512, max_interaction_bins = 16, interactions = 10, outer_bags = 4, inner_bags = 0, learning_rate = 0.001, validation_size = 0.25, min_samples_leaf = 5, max_leaves = 5, early_stopping_rounds = 100
 
 ### EBM Feature Importance: 
 ![Unknown-7](https://github.com/user-attachments/assets/f7d8a9b8-c584-40e5-953f-c96870504a9d)
 
 
-### EBM Partial Dependence Plot: 
+### Variable Importance
 ![Unknown-8](https://github.com/user-attachments/assets/ed812b8a-ea2e-47fd-9ed9-54e9a78a3400)
 
 
 ## 5. Quantitative & Fairness Analysis
 - Validation AUC: 0.7891
 - Test AUC: 0.7687
+- Remediated EBM retrained with AUC (Training AUC): 0.8013
 - Validation AIR values:
   - Black vs. White: 0.8345
   - Hispanic vs. White: 0.8765
   - Asian vs. White: 1.098
   - Female vs. Male: 1.245
 
-### AIR vs AUC Tradeoff:
+### AIR vs AUC Tradeoff for Top Contributing Features
 ![Unknown-9](https://github.com/user-attachments/assets/10975ad9-7656-43ac-9dba-b42d4e0ad234)
 
 
