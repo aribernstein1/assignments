@@ -1,4 +1,4 @@
-# Model Card: Loan Delinquency Classifier (Decision Tree + EBM)
+# Model Card: Loan Delinquency Classifier (EBM)
 
 - **Author**: Ari Bernstein  
 - **Contact**: [GitHub Repository](https://github.com/aribernstein1/assignments)  
